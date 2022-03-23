@@ -1,5 +1,6 @@
 """
-Script for scraping from cold stream farms website. Single use scraper. Takes ~8 hrs.
+Script for scraping from cold stream farms website.
+Single use scraper; Takes ~8 hrs.
 """
 import requests
 import time
@@ -11,7 +12,9 @@ from typing import Union
 _TOP_URL = "https://www.coldstreamfarm.net/"
 _TREE_URLS_PKL = "../pickles/tree_urls.pkl"
 _FILEPATH_TO_CSVS = "../csvs/"
-_DRIVER = webdriver.Chrome(executable_path="../chromedriver/macos/chromedriver")
+_DRIVER = webdriver.Chrome(
+    executable_path="../chromedriver/macos/chromedriver"
+)
 
 
 def create_tree_urls(url: str) -> Union[dict, None]:
@@ -150,7 +153,8 @@ def scrape_tree_data(tree_url: str, driver=_DRIVER) -> None:
             if oos:
                 # print(oos.text.strip())
                 f.write(oos.text.strip())
-            # if there's a div, class quantity then we have a max value we can parse
+            # if there's a div, class quantity,
+            # then we have a max value we can parse
             has_stock = stock.find("div", {"class": "quantity"})
             if has_stock:
                 # print(has_stock.find("input")["max"].strip())
@@ -173,8 +177,11 @@ def scrape_tree_data(tree_url: str, driver=_DRIVER) -> None:
     f.seek(0)
     f.truncate(truncate_amt)
     f.close()
-    print(f"Removed newline from EOF in clean_csvs.")
-    print(f"Done writing {filename}\n\n")
+    print(
+        "Removed newline from EOF in clean_csvs."
+        f"Done writing {filename}\n\n"
+    )
+
 
 if __name__ == "__main__":
     tree_urls = create_tree_urls(_TOP_URL)
@@ -191,4 +198,7 @@ if __name__ == "__main__":
                 continue
 
     else:
-        print("Unable to gather tree urls - check `create_tree_urls` function.")
+        print(
+            "Unable to gather tree urls "
+            "- check `create_tree_urls` function."
+        )

@@ -12,6 +12,14 @@ Starting at the top level of your `tree_scraping` directory, follow these instru
 ```commandline
 pip install -r requirements.txt
 ```
+4. You can now move into the `scripts` directory and run the coldstream scraper:
+```commandline
+cd scripts
+```
+Then
+```commandline
+python coldstream_scrape.py
+```
 
 ## Caveats
 Note that because this employs a headless browser (selenium), be conscious of the loading of the site. You may need to babysit the scraper a bit to make sure the data fully generates before the 60 second sleep is complete.
