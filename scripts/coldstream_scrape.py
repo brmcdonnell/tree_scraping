@@ -1,12 +1,12 @@
 """
-Houses functions for scraping from cold stream farms website. Single use scraper.
+Script for scraping from cold stream farms website. Single use scraper. Takes ~8 hrs.
 """
 import requests
-from bs4 import BeautifulSoup
 import time
 import pickle
-import os
+from bs4 import BeautifulSoup
 from selenium import webdriver
+from typing import Union
 
 _TOP_URL = "https://www.coldstreamfarm.net/"
 _TREE_URLS_PKL = "../pickles/tree_urls.pkl"
@@ -14,7 +14,7 @@ _FILEPATH_TO_CSVS = "../csvs/"
 _DRIVER = webdriver.Chrome(executable_path="../chromedriver/macos/chromedriver")
 
 
-def create_tree_urls(url: str) -> Optional[dict]:
+def create_tree_urls(url: str) -> Union[dict, None]:
     """Creates dictionary of trees and associated urls"""
     res = requests.get(url)
 
@@ -180,10 +180,9 @@ if __name__ == "__main__":
     tree_urls = create_tree_urls(_TOP_URL)
     if tree_urls:
         tree_url_dict = get_subgroup_tree_urls(tree_urls)
-        if not os.path.exists(_TREE_URLS_PKL):
-            url_pickle_file = open(_TREE_URLS_PKL, "wb")
-            pickle.dump(tree_url_dict, url_pickle_file)
-            url_pickle_file.close()
+        url_pickle_file = open(_TREE_URLS_PKL, "wb")
+        pickle.dump(tree_url_dict, url_pickle_file)
+        url_pickle_file.close()
         for tree_url in list(tree_url_dict.values()):
             try:
                 scrape_tree_data(tree_url)
